@@ -38,6 +38,8 @@
   
 ## arm
 
++ 安装qemu-system-arm
+
 + 编译内核
 
       make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- defconfig
