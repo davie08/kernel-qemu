@@ -72,6 +72,33 @@
 
       qemu-system-arm -M virt -m 512M -kernel linux-5.8/arch/arm/boot/zImage -nographic -append "root=/dev/ram0 console=ttyAMA0 rdinit=/sbin/init" -initrd ./rootfs.cpio.gz
       
+
+## riscv
+
++ 安装qemu-system-riscv32 (64的用qemu-system-riscv64)
++ 编译内核
+
+      // riscv32的
+      make ARCH=riscv CROSS_COMPILE=riscv32-unknown-linux-gnu- rv32_defconfig
+      make ARCH=riscv CROSS_COMPILE=riscv32-unknown-linux-gnu- -j64
+      
+      // riscv64的
+      make ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- defconfig
+      make ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- -j64
+      
+      // riscv32-unknown-linux-gnu-gcc或riscv64-unknown-linux-gnu-gcc在这里：
+      // https://github.com/riscv-collab/riscv-gnu-toolchain/
+      // 或这里直接下载编译包：https://github.com/riscv-collab/riscv-gnu-toolchain/releases/
+
++ 下载busybox并编译制作文件系统
+
+      //与x86类似也是一个ext4的img，只是编译时 ARCH=riscv  CROSS_COMPILE=riscv32-unknown-linux-gnu-
+      
++ 运行
+
+      qemu-system-riscv32 -nographic -machine virt -kernel linux-5.8/arch/riscv/boot/Image -append "root=/dev/vda rw console=ttyS0" -drive file=rootfs_riscv.img,format=raw,id=hd0 -device virtio-blk-device,drive=hd0
+      
+      
 ## x86的img、arm的cpio也可直接从此下载。
 
       
